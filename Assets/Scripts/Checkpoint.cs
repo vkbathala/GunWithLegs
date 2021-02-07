@@ -5,7 +5,7 @@ using UnityEngine;
 public class Checkpoint : MonoBehaviour
 {
     public Transform spawnpoint;
-    public Player player;
+    //public Player player;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +20,6 @@ public class Checkpoint : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        player.spawn.position = spawnpoint.position;
+        //player.spawn.position = spawnpoint.position;
     }
 }
