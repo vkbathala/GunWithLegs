@@ -18,7 +18,7 @@ public class PlayerFallingState : PlayerState {
         // }
 
         if (stateInput.playerControls.InGame.Shoot.WasPressedThisFrame()) {
-            //stateInput.playerController.throwCard(stateInput.playerControls.InGame.Move.ReadValue<Vector2>(), true);
+            stateInput.playerController.Shoot();
         }
 
         if (stateInput.playerController.isGrounded)

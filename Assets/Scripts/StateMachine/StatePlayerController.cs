@@ -140,50 +140,9 @@ public class StatePlayerController : MonoBehaviour
         return Vector2.zero;
     }
 
-    public void throwCard(Vector2 throwDir, bool leftThrow) {
-        // if (isLawMaker)
-        // {
-        //     Vector2 normalizedThrowDir = clampTo8Directions(throwDir);
-        //     if (throwCooldownTimer <= 0)
-        //     {
-        //         throwCooldownTimer = throwCooldownTime;
-        //         if (leftThrow)
-        //         {
-        //             PlayerStateInput playerStateInput = playerManager.GetStateInput();
-        //             Rigidbody2D cardRB = Instantiate(cardPrefab, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.Euler(normalizedThrowDir.x, normalizedThrowDir.y, 0)).GetComponent<Rigidbody2D>();
-        //             //use the first rule in the array
-        //             cardPrefab.ruleIndexToApply = playerHand[0];
-        //             if (throwDir.x < 0.1f && throwDir.x > -0.1f && throwDir.y < 0.1f && throwDir.y > -0.1f)
-        //             {
-        //                 Debug.Log(playerStateInput.lastXDir);
-        //                 cardRB.velocity = new Vector2(playerStateInput.lastXDir * cardThrowSpeed, 0);
-        //             }
-        //             else
-        //             {
-        //                 cardRB.velocity = normalizedThrowDir * cardThrowSpeed;
-        //             }
-        //             playerHand[0] = -1;
-        //         }
-        //         else
-        //         {
-        //             //use the other rule in the array
-        //             PlayerStateInput playerStateInput = playerManager.GetStateInput();
-        //             Rigidbody2D cardRB = Instantiate(cardPrefab, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.Euler(normalizedThrowDir.x, normalizedThrowDir.y, 0)).GetComponent<Rigidbody2D>();
-        //             cardPrefab.ruleIndexToApply = playerHand[1];
-        //             if (throwDir.x < 0.1f && throwDir.x > -0.1f && throwDir.y < 0.1f && throwDir.y > -0.1f)
-        //             {
-        //                 Debug.Log(playerStateInput.lastXDir);
-        //                 cardRB.velocity = new Vector2(playerStateInput.lastXDir * cardThrowSpeed, 0);
-        //             }
-        //             else
-        //             {
-        //                 cardRB.velocity = normalizedThrowDir * cardThrowSpeed;
-        //             }
-        //             playerHand[1] = -1;
-        //         }
-        //         cardPrefab.playerIndexOfShooter = playerIndex;
-        //     }
-        // }
+    public void Shoot() {
+       Vector2 shootDir = clampTo8Directions(playerControls.InGame.Move.ReadValue<Vector2>());
+       //use the abstract gun class to shoot
     }
 
     // void OnCollisionEnter2D(Collision2D collision)
@@ -197,28 +156,6 @@ public class StatePlayerController : MonoBehaviour
     private void OnCollisionExit2D(Collision2D collision)
     {
         transform.parent = null;
-    }
-
-    //Checks to see if it can take lawmaker status. It's called by the dash collider's script in OnTriggerEnter2D
-    public void checkDashCollision(Collider2D collider) {
-        // if (collider.gameObject.layer == 9) {
-        //     if (playerManager.GetState() is PlayerDashState) {
-        //         if (collider.gameObject.GetComponent<StatePlayerController>().isLawMaker)
-        //         {
-        //             collider.gameObject.GetComponent<StatePlayerController>().isLawMaker = false;
-        //             isLawMaker = true;
-        //         }
-        //             Debug.Log("I work!");
-        //     }
-        // }
-    }
-
-    public void checkCrownCollision(Collider2D collider)
-    {
-        // isLawMaker = true;
-        // Destroy(collider.gameObject);
-
-        // Debug.Log("YOU ARE LAWMAKER.");
     }
 
 }

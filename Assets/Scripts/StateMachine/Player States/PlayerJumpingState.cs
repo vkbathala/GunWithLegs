@@ -20,6 +20,10 @@ public class PlayerJumpingState : PlayerState {
         //     return;
         // }
 
+        if (stateInput.playerControls.InGame.Shoot.WasPressedThisFrame()) {
+            stateInput.playerController.Shoot();
+        }
+
         if (stateInput.rb.velocity.y <= 0)
         {
             character.ChangeState<PlayerFallingState>();
