@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class StatePlayerController : MonoBehaviour
 {
-    public float moveSpeed = 6f;
-    public float runSpeed = 7.3f;
+    public float moveSpeed = 3f;
     public float accelerationTimeAirborne;
     public float accelerationTimeGrounded;
     private float velocityXSmoothing;
@@ -58,7 +57,7 @@ public class StatePlayerController : MonoBehaviour
 
     public float CalculatePlayerVelocity(float RBvelocity, Vector2 input, float moveSpeed, float velocityXSmoothing, float accelerationTimeGrounded, float accelerationTimeAirborne, bool isGrounded)
     {
-        float targetVelocityx = input.x * (playerControls.InGame.Dash.IsPressed() ? runSpeed : moveSpeed);
+        float targetVelocityx = input.x * moveSpeed;
         return Mathf.SmoothDamp(RBvelocity, targetVelocityx, ref velocityXSmoothing, isGrounded ? accelerationTimeGrounded : accelerationTimeAirborne);
     }
 

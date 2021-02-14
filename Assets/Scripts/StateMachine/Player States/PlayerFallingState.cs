@@ -12,10 +12,10 @@ public class PlayerFallingState : PlayerState {
     {
         stateInput.playerController.isGrounded = Physics2D.OverlapCircle(stateInput.playerController.groundCheck.position, stateInput.playerController.checkRadius, stateInput.playerController.whatIsGround);
 
-        // if (stateInput.playerController.canDash && stateInput.playerControls.InGame.Dash.WasPressedThisFrame()) {
-        //     character.ChangeState<PlayerDashState>();
-        //     return;
-        // }
+        if (stateInput.playerController.canDash && stateInput.playerControls.InGame.Dash.WasPressedThisFrame()) {
+            character.ChangeState<PlayerDashState>();
+            return;
+        }
 
         if (stateInput.playerControls.InGame.Shoot.WasPressedThisFrame()) {
             stateInput.playerController.Shoot();
