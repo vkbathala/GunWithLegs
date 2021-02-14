@@ -8,7 +8,6 @@ public class PlayerDashState : PlayerState
     public override void Enter(PlayerStateInput stateInput, CharacterStateTransitionInfo transitionInfo = null)
     {
         dashTimer = stateInput.playerController.dashTime;
-        stateInput.playerController.canDash = false;
     }
 
     public override void ForceCleanUp(PlayerStateInput stateInput)
@@ -25,7 +24,6 @@ public class PlayerDashState : PlayerState
         } else
         {
             stateInput.rb.velocity = Vector2.zero;
-            //stateInput.playerController.dashing = false;
             character.ChangeState<PlayerFallingState>();
         }
 

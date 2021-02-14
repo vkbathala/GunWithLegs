@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class RailGun : RaycastGun
 {
-    Size size = Size.HEAVY;
-    public int shots_cost = 10;
-    public float base_DMG = 10f;
-    public float fire_rate = 1.0f;
+    RailGun(StatePlayerController player, Transform firePt) {
+        size = Size.HEAVY;
+        shotCost = 10;
+        damage = 10f;
+        fireRate = 1.0f;
+        this.firePt = firePt;
+        this.player = player;
+    }
 
     // The Rail gun fires train tracks in a straight line, travelling through multiple enemies
     public override void Shoot()
@@ -21,8 +25,8 @@ public class RailGun : RaycastGun
         {
             //enemy logic
 
-            bullet_trail.SetPosition(0, firePt.position);
-            bullet_trail.SetPosition(1, hitInfo.point);
+            bulletTrail.SetPosition(0, firePt.position);
+            bulletTrail.SetPosition(1, hitInfo.point);
 
             // GameObject hit_mark = (GameObject)Instantiate(hit_effect,hitInfo.point,Quaternion.identity);
             // Destroy(hit_mark,0.2f); // arbitrary delay on destroying effect, depends on if we have multiple hit effects of varying times
