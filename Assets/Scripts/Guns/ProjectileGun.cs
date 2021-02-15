@@ -6,7 +6,6 @@ public class ProjectileGun : GunBase
 {
     public GameObject bullet;
     public float bulletSpeed;
-    public Transform firePt;
     
     public override void Shoot()
     {
