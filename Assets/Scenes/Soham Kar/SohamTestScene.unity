@@ -8822,11 +8822,11 @@ GameObject:
   - component: {fileID: 2062079162}
   - component: {fileID: 2062079160}
   - component: {fileID: 2062079161}
-  - component: {fileID: 2062079159}
-  - component: {fileID: 2062079163}
+  - component: {fileID: 2062079165}
   - component: {fileID: 2062079164}
+  - component: {fileID: 2062079159}
   m_Layer: 8
-  m_Name: Player
+  m_Name: RPG
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8909,25 +8909,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2062079156}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37ba2f69f314bad48b6b3880f0f3572e, type: 3}
+  m_Script: {fileID: 11500000, guid: 05231f2854bc0984f93e4db8eb5263ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_JumpForce: 300
-  m_CrouchSpeed: 0.4
-  m_MovementSmoothing: 0.05
-  m_AirControl: 1
-  m_WhatIsGround:
-    serializedVersion: 2
-    m_Bits: 65079
-  m_GroundCheck: {fileID: 324562831}
-  m_CeilingCheck: {fileID: 1134381751}
-  m_CrouchDisableCollider: {fileID: 0}
-  OnLandEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  OnCrouchEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!61 &2062079160
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8941,7 +8925,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.14815116, y: 0.03565824}
+  m_Offset: {x: -0.5173485, y: 0.03565824}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -8952,7 +8936,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.0853696, y: 0.6738713}
+  m_Size: {x: 2.3469748, y: 0.6738713}
   m_EdgeRadius: 0
 --- !u!58 &2062079161
 CircleCollider2D:
@@ -8967,9 +8951,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.32, y: -0.40572006}
+  m_Offset: {x: -0.33, y: -0.40572006}
   serializedVersion: 2
-  m_Radius: 0.25300622
+  m_Radius: 0.23880632
 --- !u!50 &2062079162
 Rigidbody2D:
   serializedVersion: 4
@@ -8991,20 +8975,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &2062079163
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2062079156}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 924caaee82a9b974188a3337f16766f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controller: {fileID: 2062079159}
-  runSpeed: 8
 --- !u!114 &2062079164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9023,9 +8993,47 @@ MonoBehaviour:
   fireRate: 3
   animController: {fileID: 0}
   firePt: {fileID: 195678468}
-  player: {fileID: 0}
+  player: {fileID: 2062079165}
   bullet: {fileID: 8666213990023224848, guid: a13f4c46fb719ea408fb498833778fc6, type: 3}
   bulletSpeed: 10
+--- !u!114 &2062079165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062079156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8c5b8b5408fe7f47bd8c5a6b7870aa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 0.7
+  accelerationTimeAirborne: 0.05
+  accelerationTimeGrounded: 0
+  moveAfterLaunchTime: 0.03
+  moveInput: {x: 0, y: 0}
+  maxJumpVelocity: 7
+  minJumpVelocity: 5
+  isGrounded: 0
+  checkRadius: 0.01
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 65079
+  groundCheck: {fileID: 324562831}
+  dashTime: 0.1
+  dashSpeed: 8
+  gunList:
+  - {fileID: 2062079164}
+  playerManager: {fileID: 2062079159}
+  firePoint: {fileID: 195678468}
+  pistolHitEffect: {fileID: 6152003406021164188, guid: 513c6cd46304aac43bd55fdc0b444720,
+    type: 3}
+  pistolFireSound: {fileID: 8300000, guid: 32279df05fd1de146893799b2769da6c, type: 3}
+  audioSource: {fileID: 0}
+  canDoubleJump: 0
+  hasJumpedOnce: 0
+  hasDoubleJumped: 0
 --- !u!1001 &2770662625740576266
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9056,7 +9064,7 @@ PrefabInstance:
     - target: {fileID: 2770662624393624986, guid: 3aad2773ef5967b48924292ac343c7a6,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.02
       objectReference: {fileID: 0}
     - target: {fileID: 2770662624393624986, guid: 3aad2773ef5967b48924292ac343c7a6,
         type: 3}
