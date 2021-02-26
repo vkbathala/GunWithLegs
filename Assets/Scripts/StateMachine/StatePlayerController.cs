@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class StatePlayerController : MonoBehaviour
 {
-    public float moveSpeed = 6f;
-    public float runSpeed = 7.3f;
+    public float moveSpeed = 3f;
     public float accelerationTimeAirborne;
     public float accelerationTimeGrounded;
     private float velocityXSmoothing;
@@ -31,8 +30,16 @@ public class StatePlayerController : MonoBehaviour
     public PlayerControls playerControls;
     public float dashTime;
     public float dashSpeed;
-    public bool canDash = true;
-    private Player playerManager;
+
+    public List<GunBase> gunList;
+    public Player playerManager;
+    [SerializeField]
+    public Transform firePoint;
+    public GameObject pistolHitEffect;
+    public AudioClip pistolFireSound;
+    public AudioSource audioSource;
+    int currentGun;
+    public bool canDoubleJump = false, hasJumpedOnce = false, hasDoubleJumped = false;
 
     private void Awake() {
         playerControls = new PlayerControls();
@@ -50,6 +57,10 @@ public class StatePlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         playerManager = GetComponent<Player>();
+        audioSource = GetComponent<AudioSource>();
+        currentGun = 0;
+        gunList = new List<GunBase>();
+        gunList.Add(new Pistol(this, firePoint, pistolHitEffect, pistolFireSound, GetComponent<LineRenderer>(), null, 5f));
     }
 
     public void Update() {
@@ -58,14 +69,33 @@ public class StatePlayerController : MonoBehaviour
 
     public float CalculatePlayerVelocity(float RBvelocity, Vector2 input, float moveSpeed, float velocityXSmoothing, float accelerationTimeGrounded, float accelerationTimeAirborne, bool isGrounded)
     {
-        float targetVelocityx = input.x * (playerControls.InGame.Dash.IsPressed() ? runSpeed : moveSpeed);
+        float targetVelocityx = input.x * moveSpeed;
         return Mathf.SmoothDamp(RBvelocity, targetVelocityx, ref velocityXSmoothing, isGrounded ? accelerationTimeGrounded : accelerationTimeAirborne);
     }
 
     //if you jump it changes your y velocity to the maxJumpVelocity
     public void Jump()
     {
-       rb.velocity = new Vector2(rb.velocity.x, maxJumpVelocity);
+        if (!isGrounded && canDoubleJump && hasJumpedOnce) {
+            rb.velocity = new Vector2(rb.velocity.x, maxJumpVelocity * 1.2f);
+            hasJumpedOnce = false;
+            hasDoubleJumped = true;
+            Debug.Log("second jump");
+        } else if (isGrounded && !hasJumpedOnce) {
+            rb.velocity = new Vector2(rb.velocity.x, maxJumpVelocity);
+            hasDoubleJumped = false;
+            Debug.Log("first jump");
+        }
+    }
+
+    public bool canJump()
+    {
+        if (isGrounded) {
+            return true;
+        } else if (!isGrounded && canDoubleJump && !hasDoubleJumped) {
+            return true;
+        }
+        return false;
     }
 
     public void JumpRelease()
@@ -140,9 +170,30 @@ public class StatePlayerController : MonoBehaviour
         return Vector2.zero;
     }
 
+    public bool canDash() {
+        return gunList[currentGun].canDash();
+    }
+
+    public void switchGun(bool right) {
+        if (right) {
+            if (currentGun + 1 == gunList.Count) {
+                currentGun = 0;
+            } else {
+                currentGun++;
+            }
+        } else {
+            if (currentGun - 1 == -1) {
+                currentGun = gunList.Count - 1;
+            } else {
+                currentGun--;
+            }
+        }
+    }
+
     public void Shoot() {
        Vector2 shootDir = clampTo8Directions(playerControls.InGame.Move.ReadValue<Vector2>());
        //use the abstract gun class to shoot
+       gunList[currentGun].Shoot();
     }
 
     // void OnCollisionEnter2D(Collision2D collision)
@@ -156,6 +207,25 @@ public class StatePlayerController : MonoBehaviour
     private void OnCollisionExit2D(Collision2D collision)
     {
         transform.parent = null;
+    }
+
+    public void showBulletTrail(LineRenderer renderer) {
+        StartCoroutine(displayBulletTrail(renderer));
+    }
+
+    public void playSound(AudioClip clip) {
+        audioSource.clip = clip;
+        audioSource.Play();
+    }
+
+    private IEnumerator displayBulletTrail(LineRenderer bulletTrail) {
+        bulletTrail.enabled = true;
+        yield return new WaitForSeconds(0.02f);
+        bulletTrail.enabled = false;
+    }
+
+    public void setDoubleJump(bool canPlayerDoubleJump) {
+        canDoubleJump = canPlayerDoubleJump;
     }
 
 }

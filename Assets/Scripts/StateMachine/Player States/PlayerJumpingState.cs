@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerJumpingState : PlayerState {
-
     
     public override void Enter(PlayerStateInput stateInput, CharacterStateTransitionInfo transitionInfo = null)
     {
@@ -15,13 +14,19 @@ public class PlayerJumpingState : PlayerState {
     {
         stateInput.playerController.isGrounded = Physics2D.OverlapCircle(stateInput.playerController.groundCheck.position, stateInput.playerController.checkRadius, stateInput.playerController.whatIsGround);
 
-        // if (stateInput.playerController.canDash && stateInput.playerControls.InGame.Dash.WasPressedThisFrame()) {
-        //     character.ChangeState<PlayerDashState>();
-        //     return;
-        // }
+        if (stateInput.playerController.canDash() && stateInput.playerControls.InGame.Dash.WasPressedThisFrame()) {
+            character.ChangeState<PlayerDashState>();
+            return;
+        }
 
         if (stateInput.playerControls.InGame.Shoot.WasPressedThisFrame()) {
             stateInput.playerController.Shoot();
+        }
+
+        if (stateInput.playerControls.InGame.Jump.WasPressedThisFrame() && stateInput.playerController.canJump())
+        {
+            stateInput.playerController.hasJumpedOnce = true;
+            stateInput.playerController.Jump();
         }
 
         if (stateInput.rb.velocity.y <= 0)
@@ -35,19 +40,11 @@ public class PlayerJumpingState : PlayerState {
         }
         // Movement animations and saving previous input
         int horizontalMovement = (int)Mathf.Sign(stateInput.playerControls.InGame.Move.ReadValue<Vector2>().x);
-        // if (InputMap.Instance.GetInput(ActionType.RIGHT))
-        // {
-        //     horizontalMovement++;
-        // }
-        // if (InputMap.Instance.GetInput(ActionType.LEFT))
-        // {
-        //     horizontalMovement--;
-        // }
         if (stateInput.lastXDir != horizontalMovement)
         {
             if (horizontalMovement != 0)
             {
-                //stateInput.spriteRenderer.flipX = horizontalMovement == -1;
+                stateInput.spriteRenderer.flipX = horizontalMovement == -1;
             }
         }
         stateInput.lastXDir = horizontalMovement;

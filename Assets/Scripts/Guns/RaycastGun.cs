@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class RaycastGun : GunBase
 {
-    public LineRenderer bullet_trail;
-    public GameObject hit_effect;
-    public AudioClip fire_sound;
-    public Transform firePt;
+    public LineRenderer bulletTrail;
+    public GameObject hitEffect;
+    public AudioClip fireSound;
 
     public override void Shoot()
     {
@@ -20,10 +19,10 @@ public class RaycastGun : GunBase
         {
             //enemy logic
 
-            bullet_trail.SetPosition(0, firePt.position);
-            bullet_trail.SetPosition(1, hitInfo.point);
+            bulletTrail.SetPosition(0, firePt.position);
+            bulletTrail.SetPosition(1, hitInfo.point);
 
-            GameObject hit_mark = (GameObject)Instantiate(hit_effect,hitInfo.point,Quaternion.identity);
+            GameObject hit_mark = (GameObject)Instantiate(hitEffect,hitInfo.point,Quaternion.identity);
             Destroy(hit_mark,0.2f); // arbitrary delay on destroying effect, depends on if we have multiple hit effects of varying times
             
         }
